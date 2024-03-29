@@ -8,7 +8,7 @@ import Login, {action as loginAction} from './pages/Login'
 import Signup, { action as signupAction} from './pages/Signup'
 
 //Components
-import Layout from './components/Layout'
+import AuthLayout from './components/AuthLayout'
 
 const router = createBrowserRouter([
   {
@@ -16,8 +16,8 @@ const router = createBrowserRouter([
     element: <Home/>,
   },
   {
-    path: "/",
-    element: <Layout />,
+    path: "/auth/",
+    element: <AuthLayout />,
     children: [
       {
         path: "login",

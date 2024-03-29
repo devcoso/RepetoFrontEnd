@@ -1,22 +1,30 @@
-import { Form, useActionData, redirect } from "react-router-dom"
+import { Form, useActionData, redirect, Link } from "react-router-dom"
 import Error from "../components/Error"
 import { newUser } from "../data/users"
 
 export async function action({request}) {
     const formData = await request.formData()
-    const email = formData.get('email')
-    const name = formData.get('name')
+    const nombre = formData.get('nombre')
+    const primerApellido = formData.get('primerApellido')
+    const segundoApellido = formData.get('segundoApellido')
+    const correo = formData.get('correo')
     const password = formData.get('password')
     const password2 = formData.get('password2')
+    const acepto = formData.get('acepto')
     let regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
     //Validación
     let errores = []
-    console.log(name);
-    if(name.length < 3) { 
+    if(nombre.length < 3) { 
         errores.push('El nombre debe tener al menos 3 caracteres')
     }
-    if(!regex.test(email)){
-        errores.push('Email no válido')
+    if(primerApellido.length < 3) { 
+        errores.push('El primer apellido debe tener al menos 3 caracteres')
+    }
+    if(segundoApellido.length < 3) { 
+        errores.push('El segundo nombre debe tener al menos 3 caracteres')
+    }
+    if(!regex.test(correo)){
+        errores.push('Correo no válido')
     }
     if(password.length < 8) {
         errores.push('La contraseña debe tener al menos 8 caracteres')
@@ -27,10 +35,13 @@ export async function action({request}) {
     if(password != password2) {
         errores.push('Las contraseñas no coinciden')
     }
+    if(acepto !== 'on') {
+        errores.push('Debes aceptar los términos y condiciones de Repeto')
+    }
     if(Object.keys(errores).length) {
         return errores
     }
-    const datos = {name, email, password}
+    const datos = {'name' : nombre, 'email': correo, password}
     const respuesta = await newUser(datos)
     if(respuesta.error){  
         return [respuesta.message]
@@ -44,30 +55,40 @@ const Signup = () => {
 
     return (
         <>
-            <h1 className="font-bold text-3xl">Crear cuenta</h1>
+            <h1 className="text-3xl font-bold text-center text-neutral-700">Crea tu cuenta</h1>
+            <p className="text-neutral-700 text-center text-lg">Llena todos los campos, para crear tu cuenta</p>
             {errores?.length && errores.map((error, i) => <Error key={i}>{error}</Error>)}
-            <Form method="POST" noValidate>
-                <div className="w-full">
-                    <label htmlFor="name">Nombres:</label>
-                    <input type="text" id="name" name="name"/>
+            <Form method="POST" noValidate className="space-y-5 text-xl">
+                <div>
+                    <label className="text-neutral-700" htmlFor="nombre">Nombre</label>
+                    <input className="block w-full p-1 bg-neutral-200 rounded-md" type="text" id="nombre" name="nombre"/>
                 </div>
                 <div>
-                    <label htmlFor="name">Apellidos:</label>
-                    <input type="text" id="name" name="name"/>
+                    <label className="text-neutral-700" htmlFor="primerApellido">Primer apellido</label>
+                    <input className="block w-full p-1 bg-neutral-200 rounded-md" type="text" id="primerApellido" name="primerApellido"/>
                 </div>
                 <div>
-                    <label htmlFor="email">Email:</label>
-                    <input type="text" id="email" name="email"/>
+                    <label className="text-neutral-700" htmlFor="segundoApellido">Segundo apellido</label>
+                    <input className="block w-full p-1 bg-neutral-200 rounded-md" type="text" id="segundoApellido" name="segundoApellido"/>
                 </div>
                 <div>
-                    <label htmlFor="password">Contraseña:</label>
-                    <input type="password" id="password" name="password"/>
+                    <label className="text-neutral-700" htmlFor="correo">Correo eletrónico</label>
+                    <input className="block w-full p-1 bg-neutral-200 rounded-md" type="text" id="correo" name="correo"/>
                 </div>
                 <div>
-                    <label htmlFor="password2">Repite tu Contraseña:</label>
-                    <input type="password" id="password2" name="password2"/>
+                    <label className="text-neutral-700" htmlFor="password">Contraseña</label>
+                    <input className="block w-full p-1 bg-neutral-200 rounded-md" type="password" id="password" name="password"/>
                 </div>
-                <input type="submit" value='Crea tu cuenta' />
+                <div>
+                    <label className="text-neutral-700" htmlFor="password2">Repite tu Contraseña</label>
+                    <input className="block w-full p-1 bg-neutral-200 rounded-md" type="password" id="password2" name="password2"/>
+                </div>
+                <div className="flex gap-3 items-start justify-center">
+                    <input className="mt-1 block p-1 rounded-md" type="checkbox" id="acepto" name="acepto"/>
+                    <label className="text-neutral-700 text-justify leading-none" htmlFor="acepto">Acepto el aviso de privacidad, los términos y condiciones de Repeto</label>
+                </div>
+                <Link to="/auth/login" className="block text-center text-lime-600 hover:text-lime-800 transition-colors">¿Ya tienes cuenta? Inicia sesión</Link>
+                <input className="block w-2/3 mx-auto text-white bg-lime-600 rounded-md py-3 font-bold hover:bg-lime-800 transition-colors" type="submit" value='Registrarme' />
             </Form>
         </>
     )
