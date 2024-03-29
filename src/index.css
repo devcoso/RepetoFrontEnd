@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Pretesto';
+    src: url('/fonts/PreTesto.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+  * {
+    font-family: 'Pretesto', sans-serif;
+  }
+}
