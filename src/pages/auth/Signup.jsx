@@ -1,6 +1,6 @@
 import { Form, useActionData, redirect, Link } from "react-router-dom"
-import Error from "../components/Error"
-import { newUser } from "../data/users"
+import Error from "../../components/Error"
+import { newUser } from "../../data/authUsers"
 
 export async function action({request}) {
     const formData = await request.formData()

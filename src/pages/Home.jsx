@@ -10,7 +10,7 @@ const Home = () => {
             <div className="h-screen bg-[url('/img/home-bg.jpg')] bg-cover bg-center">
                 <div className=" h-full bg-black/[0.6] flex items-center flex-col justify-evenly">
                     <div className='flex justify-center w-full'>
-                        <Link to='/' className='w-2/3 md:w-1/2 lg:w-1/3 m-auto'>
+                        <Link to='/' className='w-2/3 md:w-1/2 lg:w-1/3 mx-auto'>
                             <img src="img/REPETO-LOGO.png" alt="Logo de repeto"/>
                         </Link>
                     </div>
