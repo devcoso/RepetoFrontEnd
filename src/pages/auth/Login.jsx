@@ -11,7 +11,8 @@ export async function action({request}) {
     if(respuesta.error){  
         return respuesta.message
     }
-    console.log(respuesta.user)
+    const user = JSON.stringify(respuesta.user)
+    localStorage.setItem('user', user)
     return redirect('/')
 }
 

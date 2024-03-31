@@ -1,4 +1,14 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, redirect } from 'react-router-dom'
+
+import { getMe } from '../data/authUsers'
+
+export async function loader(){ 
+    const response = await getMe()
+    if(!response.error){
+        return redirect('/')
+    }
+    return null
+}
 
 const AuthLayout = () => {
     return (
