@@ -8,7 +8,7 @@ import Home from './pages/Home'
 import Login, {action as loginAction} from './pages/auth/Login'
 import Signup, { action as signupAction} from './pages/auth/Signup'
 import ForgotPassword, {action as forgotPasswordAction} from './pages/auth/ForgotPassword'
-import ResetPassword from './pages/auth/ResetPassword'
+import ResetPassword, {loader as loaderResetPassword, action as actionResetPassword} from './pages/auth/ResetPassword'
 
 import ErrorPage from './pages/ErrorPage'
 
@@ -44,8 +44,10 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        path: "reset-password",
+        path: "reset-password/:token",
         element: <ResetPassword />,
+        loader: loaderResetPassword,
+        action: actionResetPassword,
         errorElement: <ErrorPage />,
       },
     ],

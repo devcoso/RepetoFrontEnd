@@ -12,7 +12,7 @@ export default function ErrorPage() {
     return (
       <div id="error-page" className=" min-h-screen flex flex-col justify-center items-center gap-5">
         <Link to='/' className='w-2/3 md:w-1/2 lg:w-1/3 mx-auto'>
-                            <img src="img/REPETO-LOGO.png" alt="Logo de repeto"/>
+                            <img src="/img/REPETO-LOGO.png" alt="Logo de repeto"/>
         </Link>
         <h1 className=" text-3xl text-lime-600">¡Ha ocurrido un Error! {error.status}</h1>
         <p>{error.statusText}</p>
