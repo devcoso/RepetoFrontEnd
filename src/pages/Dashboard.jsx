@@ -1,6 +1,8 @@
 import { useLoaderData, redirect } from "react-router-dom"
 import { getMe } from "../data/authUsers"
 
+import QrCoderReader from "../components/QrCoderReader"
+
 export async function loader() { 
     const response = await getMe()
     if(response.error){
@@ -22,6 +24,7 @@ const Dashboard = () => {
                     </>
                 )
             }
+            <QrCoderReader/>
         </>
     )
 }

@@ -16,6 +16,7 @@ export async function newUser(datos){
 }
 
 export async function loginUser(datos){ 
+    console.log(datos);
     try {
         const url = import.meta.env.VITE_API_URL + '/auth/login'
         const respuesta = await fetch(url, {
