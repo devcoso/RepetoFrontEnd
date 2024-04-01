@@ -81,6 +81,10 @@ export async function getMe(){
             const data = await respuesta.json()
             if(data.error){
                 localStorage.removeItem('user')
+            } else {
+                data.user = {...data.user, jwt: user.jwt}
+                const userLS = JSON.stringify(data.user)
+                localStorage.setItem('user', userLS)
             }
             return data
         }
