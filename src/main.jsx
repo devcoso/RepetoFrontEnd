@@ -15,7 +15,9 @@ import Perfil, {loader as perfilLoader} from './pages/app/Perfil'
 import Recompensas from './pages/app/Recompensas'
 
 import Inicio from './pages/maquina/Inicio'
-import Reciclando from './pages/maquina/Reciclando';
+import Reciclando, {action as reciclandoAction} from './pages/maquina/Reciclando';
+import Recompensa, {loader as recompensaLoader} from './pages/maquina/Recompensa';
+import Canjear, {loader as canjearLoader} from './pages/maquina/Canjear';
 
 import ErrorPage from './pages/ErrorPage'
 
@@ -101,10 +103,23 @@ const router = createBrowserRouter([
       {
         path: "reciclando",
         element: <Reciclando />,
+        action: reciclandoAction,
         errorElement: <ErrorPage />,
-      }
+      },
+      {
+        path: "recompensa/:codigo",
+        element: <Recompensa />,
+        loader: recompensaLoader,
+        errorElement: <ErrorPage />,
+      },
     ]
   },
+  {
+    path: 'canjear/:codigo',
+    element: <Canjear />,
+    loader: canjearLoader,
+    errorElement: <ErrorPage />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

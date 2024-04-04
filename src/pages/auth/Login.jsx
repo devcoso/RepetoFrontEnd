@@ -16,6 +16,11 @@ export async function action({request}) {
     const user = await getMe()
     const persona = JSON.stringify(user.persona)
     localStorage.setItem('user', persona)
+    const redireccion = localStorage.getItem('redirect')
+    if(redireccion){ 
+        localStorage.removeItem('redirect')
+        return redirect(redireccion)
+    }
     return redirect('/app')
 }
 

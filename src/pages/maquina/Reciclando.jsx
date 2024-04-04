@@ -1,8 +1,25 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { getReciclando } from "../../data/maquinaServices"
+import { Form, redirect } from "react-router-dom"
+import { getReciclando, terminarReciclado } from "../../data/maquinaServices"
 import {ToastContainer, toast} from 'react-toastify';
+import Swal from 'sweetalert2'
 import 'react-toastify/dist/ReactToastify.css';
+
+export async function action() { 
+    const data = await terminarReciclado()
+    console.log(data);
+    if(data.status){
+        return redirect(`/maquina/recompensa/${data.reciclado}`)
+    }
+    Swal.fire({ 
+        icon: 'error',
+        title: 'Error',
+        text: 'No se ingresaron botellas',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#a31f0d'
+    })
+    return redirect('/maquina')
+}
 
 const Reciclando = () => {
     const [total, setTotal] = useState(0)
@@ -37,13 +54,15 @@ const Reciclando = () => {
     }, [])
 
     return (
-        <div className="h-full flex flex-col justify-center items-center">
+        <div className="h-full w-full flex flex-col justify-center items-center">
             <ToastContainer className='text-3xl'/>
             <div className="text-white flex flex-col justify-center items-center h-full text-7xl ">
-                <p className="text-neutral-300">Botellas ingresadas</p>
-                <p className="font-bold text-9xl ">{total}</p>
+                <p className="text-white">Botellas ingresadas</p>
+                <p className="font-bold text-9xl text-lime-300">{total}</p>
             </div>
-            <Link className="w-full text-3xl bg-red-700 py-3 text-white text-center hover:bg-red-900 max-w-96 mx-auto block">Terminar</Link>
+            <Form method="POST" noValidate>
+                <input className="px-32 text-3xl block w-full mx-auto text-white bg-lime-600 rounded-md py-3 font-bold hover:bg-lime-800 transition-colors" type="submit" value='Terminar' />
+            </Form>
         </div>
     )
 }
