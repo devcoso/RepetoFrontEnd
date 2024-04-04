@@ -11,8 +11,8 @@ export async function action({request}) {
     const correo = formData.get('correo')
     let regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
     if(!regex.test(correo)) return 'Correo inválido'
-    const respuesta = await forgotPassword({'email': correo})
-    if(respuesta.error) return respuesta.message	
+    const respuesta = await forgotPassword({'correo': correo})
+    if(!respuesta.status) return respuesta.mensaje	
     Swal.fire({ 
         icon: 'success', 
         title: 'Correo enviado', 

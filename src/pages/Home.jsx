@@ -1,12 +1,11 @@
 import { Link, useLoaderData } from 'react-router-dom'
 
-import { getMe } from '../data/authUsers'
+import { authMe } from '../data/authUsers'
 
 export async function loader(){ 
-    const response = await getMe()
-    return !response.error
+    const response = await authMe()
+    return response.status
 }
-
 
 const Home = () => {
     const IsUserLogged = useLoaderData()
@@ -25,7 +24,7 @@ const Home = () => {
                     <div className='w-3/4 lg:w-2/3 xl:w-1/3 text-center text-white'>
                         <div className="flex flex-col items-center justify-center md:flex-row text-xl gap-3 mb-10">
                             {IsUserLogged ? (
-                                <Link to='/dashboard' className='text-white px-11 py-3 bg-lime-600 rounded-2xl w-full hover:bg-lime-800 transition-colors'>Ir al Dashboard</Link>
+                                <Link to='/app' className='text-white px-11 py-3 bg-lime-600 rounded-2xl w-full hover:bg-lime-800 transition-colors'>Abrir app</Link>
                             ) : (
                                 <>
                                     <Link to='/auth/login' className='text-white px-11 py-3 bg-lime-600 rounded-2xl w-full hover:bg-lime-800 transition-colors'>Iniciar Sesión</Link>

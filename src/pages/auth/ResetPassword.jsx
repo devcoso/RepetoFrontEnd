@@ -24,10 +24,10 @@ export async function action({request}) {
     if(Object.keys(errores).length) {
         return errores
     }
-    const datos = { password, token}
-    const respuesta = await resetPassword(datos)
-    if(respuesta.error){  
-        return [respuesta.message]
+    const datos = { 'Contrasenia': password}
+    const respuesta = await resetPassword(datos, token)
+    if(!respuesta.status){  
+        return [respuesta.mensaje]
     }
     Swal.fire({ 
         icon: 'success', 

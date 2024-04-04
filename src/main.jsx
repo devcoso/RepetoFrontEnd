@@ -10,12 +10,19 @@ import Signup, { action as signupAction} from './pages/auth/Signup'
 import ForgotPassword, {action as forgotPasswordAction} from './pages/auth/ForgotPassword'
 import ResetPassword, {loader as resetPasswordLoader, action as resetPasswordAction} from './pages/auth/ResetPassword'
 
-import Dashboard, {loader as dashboardLoader} from './pages/Dashboard'
+import Index, {loader as indexLoader} from './pages/app/Index'
+import Perfil, {loader as perfilLoader} from './pages/app/Perfil'
+import Recompensas from './pages/app/Recompensas'
+
+import Inicio from './pages/maquina/Inicio'
+import Reciclando from './pages/maquina/Reciclando';
 
 import ErrorPage from './pages/ErrorPage'
 
 //Components
 import AuthLayout, {loader as authLayoutLoader} from './components/AuthLayout'
+import AppLayout, {loader as appLayoutLoader} from './components/AppLayout';
+import MaquinaLayout from './components/MaquinaLayout';
 
 const router = createBrowserRouter([
   {
@@ -57,10 +64,46 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
-    loader: dashboardLoader,
+    path: "/app/",
+    element: <AppLayout />,
+    loader: appLayoutLoader,
     errorElement: <ErrorPage />,
+    children : [
+      {
+        index: true,
+        element: <Index />,
+        loader: indexLoader,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "perfil",
+        element: <Perfil />,
+        loader: perfilLoader,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "recompensas",
+        element: <Recompensas />,
+        errorElement: <ErrorPage />,
+      },
+    ]
+  },
+  {
+    path: "/maquina",
+    element: <MaquinaLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Inicio />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "reciclando",
+        element: <Reciclando />,
+        errorElement: <ErrorPage />,
+      }
+    ]
   },
 ]);
 

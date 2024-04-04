@@ -1,5 +1,5 @@
 import { Form, useActionData, redirect, Link } from "react-router-dom"
-import { loginUser } from "../../data/authUsers"
+import { getMe, loginUser } from "../../data/authUsers"
 
 import Error from "../../components/Error"
 
@@ -7,13 +7,16 @@ export async function action({request}) {
     const formData = await request.formData()
     const correo = formData.get('correo')
     const password = formData.get('password')
-    const respuesta = await loginUser({'email': correo, password})
-    if(respuesta.error){  
-        return respuesta.message
+    const respuesta = await loginUser({'NombreUsuario': correo, 'Contrasenia': password})
+    if(!respuesta.status){  
+        return respuesta.mensaje
     }
-    const user = JSON.stringify(respuesta.user)
-    localStorage.setItem('user', user)
-    return redirect('/')
+    const token = JSON.stringify(respuesta.token)
+    localStorage.setItem('token', token)
+    const user = await getMe()
+    const persona = JSON.stringify(user.persona)
+    localStorage.setItem('user', persona)
+    return redirect('/app')
 }
 
 const Login = () => {

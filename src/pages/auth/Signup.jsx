@@ -1,4 +1,5 @@
 import { Form, useActionData, redirect, Link } from "react-router-dom"
+import Swal from "sweetalert2"
 import Error from "../../components/Error"
 import { newUser } from "../../data/authUsers"
 
@@ -20,9 +21,6 @@ export async function action({request}) {
     if(primerApellido.length < 3) { 
         errores.push('El primer apellido debe tener al menos 3 caracteres')
     }
-    if(segundoApellido.length < 3) { 
-        errores.push('El segundo nombre debe tener al menos 3 caracteres')
-    }
     if(!regex.test(correo)){
         errores.push('Correo no válido')
     }
@@ -41,14 +39,25 @@ export async function action({request}) {
     if(Object.keys(errores).length) {
         return errores
     }
-    const datos = {'name' : nombre, 'email': correo, password}
-    const respuesta = await newUser(datos)
-    if(respuesta.error){  
-        return [respuesta.message]
+    const datos = {
+        'NombreUsuario' : correo, 
+        'Correo': correo, 
+        'Contrasenia': password,
+        "Nombre": nombre,
+        "PrimerApellido": primerApellido,
+        "SegundoApellido": segundoApellido
     }
-    const user = JSON.stringify(respuesta.user)
-    localStorage.setItem('user', user)
-    return redirect('/')
+    const respuesta = await newUser(datos)
+    if(!respuesta.status){  
+        return [respuesta.mensaje]
+    }
+    Swal.fire({ 
+        icon: 'success', 
+        title: 'Se ha creado tu cuenta', 
+        text: 'Inicia sesión con tus credenciales',
+        confirmButtonColor: '#65a30d'
+    })
+    return redirect('/auth/login')
 }
 
 const Signup = () => {

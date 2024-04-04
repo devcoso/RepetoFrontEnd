@@ -1,6 +1,6 @@
 export async function newUser(datos){
     try {
-        const url = import.meta.env.VITE_API_URL + '/auth/signup'
+        const url = import.meta.env.VITE_API_URL + '/api/auth/registro'
         const respuesta = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(datos),
@@ -16,9 +16,8 @@ export async function newUser(datos){
 }
 
 export async function loginUser(datos){ 
-    console.log(datos);
     try {
-        const url = import.meta.env.VITE_API_URL + '/auth/login'
+        const url = import.meta.env.VITE_API_URL + '/api/auth/login'
         const respuesta = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(datos),
@@ -35,7 +34,7 @@ export async function loginUser(datos){
 
 export async function forgotPassword(datos){
     try {
-        const url = import.meta.env.VITE_API_URL + '/auth/forgot-password'
+        const url = import.meta.env.VITE_API_URL + '/api/auth/forgot-password'
         const respuesta = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(datos),
@@ -52,7 +51,7 @@ export async function forgotPassword(datos){
 
 export async function resetPassword(datos){ 
     try {
-        const url = import.meta.env.VITE_API_URL + '/auth/reset-password'
+        const url = import.meta.env.VITE_API_URL + '/api/auth/reset-password'
         const respuesta = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(datos),
@@ -67,32 +66,48 @@ export async function resetPassword(datos){
     }
 }
 
-export async function getMe(){
-    const user = JSON.parse(localStorage.getItem('user'))
-    if(user){
+export async function authMe(){
+    const token = JSON.parse(localStorage.getItem('token'))
+    if(token){
         try {
-            const url = import.meta.env.VITE_API_URL + '/auth/me'
+            const url = import.meta.env.VITE_API_URL + '/api/auth/me'
             const respuesta = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type' : 'application/json',
-                    'Authorization' : `Bearer ${user.jwt}`
+                    'Authorization' : `${token}`
                 }
             })
             const data = await respuesta.json()
-            if(data.error){
-                localStorage.removeItem('user')
-            } else {
-                data.user = {...data.user, jwt: user.jwt}
-                const userLS = JSON.stringify(data.user)
-                localStorage.setItem('user', userLS)
-            }
             return data
         }
         catch (error) {
             console.log(error);
-            return {error: true, message: 'Error al conectar con el servidor'}
+            return {status: false, message: 'Error al conectar con el servidor'}
         }
     }
-    return {error: true, message: 'Sin usuario'}
+    return {status: false, message: 'Sin usuario'}
+}
+
+export async function getMe(){
+    const token = JSON.parse(localStorage.getItem('token'))
+    if(token){
+        try {
+            const url = import.meta.env.VITE_API_URL + '/api/persona/datos'
+            const respuesta = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization' : `${token}`
+                }
+            })
+            const data = await respuesta.json()
+            return data
+        }
+        catch (error) {
+            console.log(error);
+            return {status: false, message: 'Error al conectar con el servidor'}
+        }
+    }
+    return {status: false, message: 'Sin usuario'}
 }
