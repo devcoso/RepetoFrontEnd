@@ -1,10 +1,14 @@
 import { useLoaderData, redirect, Outlet, Link, useLocation} from "react-router-dom"
-import { authMe } from "../data/authUsers"
+import { authMe, getMe } from "../data/authUsers"
 
 export async function loader() { 
     const response = await authMe()
     if(!response.status){
         return redirect('/auth/login')
+    }
+    const user = await getMe()
+    if(user.status){ 
+        return user.persona
     }
     return null
 }
@@ -22,7 +26,13 @@ const AppLayout = () => {
                     <Link to='/' className='w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6'>
                         <img src="/img/REPETO-LOGO.png" alt="Logo de repeto"/>
                     </Link>
-                    <Link to='/app/recompensas'>Puntos</Link>
+                    <Link to='/app/recompensas' className="text-center">
+                        <p>Monedas Ecológicas</p>
+                        <div className="flex justify-center items-center">
+                            <p className="font-bold text-xl">{user?.TotalReciclado * 10}</p>
+                            <img src="/img/hoja.png" alt="Moneda Ecológica" className="w-5 h-5"/>
+                        </div>
+                    </Link>
                 </div>
                 <div className="p-3 md:p-5 lg:p-7 overflow-y-scroll no-scrollbar lg:overflow-y-auto h-full w-full">
                     <Outlet context={{user}}/>

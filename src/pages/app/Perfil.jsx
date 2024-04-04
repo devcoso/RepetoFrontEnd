@@ -9,7 +9,7 @@ export function loader() {
 const Perfil = () => {
     const user = useLoaderData()
     return (
-        <div className='px-5 space-y-4'>
+        <div className='px-5 space-y-4 max-w-[600px] mx-auto'>
             <h1 className=' text-neutral-800 text-2xl text-center'>Perfil</h1>
             <div className="flex justify-between text-xl">
                 <p className='text-neutral-600'>Nombre:</p>

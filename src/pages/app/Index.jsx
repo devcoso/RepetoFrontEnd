@@ -10,7 +10,7 @@ const Index = () => {
     const reciclados = useLoaderData()
     
     return (
-       <>
+       <div className='max-w-[600px] mx-auto'>
         <div className='h-1/2 bg-neutral-300 p-3 flex flex-col text-xl'>
             <h2 className='text-neutral-800 text-2xl text-center'>Resumen</h2>
             <div className='flex h-1/2'>
@@ -45,7 +45,7 @@ const Index = () => {
                 })
             }
         </div>
-       </>
+       </div>
        
     )
 }
